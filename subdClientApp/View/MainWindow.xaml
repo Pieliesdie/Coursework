@@ -1,0 +1,459 @@
+﻿<Window x:Class="subdClientApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:subdClientApp"
+        mc:Ignorable="d"
+        Title="НеКонсультант" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="20"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}" 
+        Loaded="Window_Loaded" Closed="Window_Closed">
+
+
+    <Grid >
+        <materialDesign:DrawerHost           
+            BorderThickness="2"
+            BorderBrush="{DynamicResource MaterialDesignDivider}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <StackPanel
+                    Margin="16">
+                    <ToggleButton
+                        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        CommandParameter="{x:Static Dock.Left}"
+                        Margin="4"
+                        x:Name="MenuHideButton"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}">
+                    </ToggleButton>
+
+                    <Button
+                        x:Name="ArticlesButton"
+                        Click="ArticlesButton_Click"
+                           Style="{StaticResource MaterialDesignFlatButton}">
+                        Статьи
+                    </Button>
+
+                    <Button
+                        x:Name="AuthorsButton"
+                        Click="AuthorsButton_Click"
+                           Style="{StaticResource MaterialDesignFlatButton}">
+                        Авторы
+                    </Button>
+
+                    <Button
+                        x:Name="TypeButton"
+                        Click="TypeButton_Click"
+                           Style="{StaticResource MaterialDesignFlatButton}">
+                        Типы документов
+                    </Button>
+
+                    <Button
+                        x:Name="ConsoleButton"
+                        Visibility="Hidden"
+                        Click="ConsoleButton_Click"
+                           Style="{StaticResource MaterialDesignFlatButton}">
+                        Консоль Админа
+                    </Button>
+
+                </StackPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <Menu
+                    IsMainMenu="True"
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Stretch">
+
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DockPanel HorizontalAlignment="Stretch"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+
+                    <ToggleButton
+                            IsChecked="{Binding ElementName=MenuHideButton,Path=IsChecked}"
+                            Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                            Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                            CommandParameter="{x:Static Dock.Left}" >
+                        <materialDesign:PackIcon  Kind="ArrowLeft" />
+                    </ToggleButton>
+
+                    <MenuItem
+                        Header="_Меню"
+                        Name="MenuButton">
+                        <MenuItem
+                            Header="Добавить статью"
+                            Click="MenuItem_Click_1">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="BooksAdd" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Header="Добавить автора"
+                            Click="MenuItem_Click">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="AccountsAddOutline" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Header="Добавить тип документа"
+                            Click="MenuItem_Click_2">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="FileDocumentBoxPlus" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem
+                            Header="Logout"
+                            Click="MenuItem_Click_5">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon
+                                    Kind="Logout" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem
+                            x:Name="ExitButton"
+                            Click="ExitButton_Click"
+                            Header="Выход"/>
+                    </MenuItem>
+
+                    <MenuItem
+                        HorizontalAlignment="Right"
+                        x:Name="InfoItem"
+                        Width="Auto"
+                        Header="{Binding name}"
+                        IsEnabled="False"/>
+                </Menu>
+
+                <TabControl
+                    x:Name="tabCntrl">
+                    <TabItem
+                        Visibility="Collapsed"
+                        x:Name="GridTab">
+                        <DataGrid          
+                              SelectionMode="Single"
+                              SelectionUnit ="FullRow"
+                              ColumnWidth="*"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              x:Name="dataGrid"                  
+                              CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              local:DataGridExtension.HideAnnotatedColumns="True">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem
+                                       Header="Delete"
+                                        Click="MenuItem_Click_3">
+                                    </MenuItem>
+                                    <MenuItem
+                                        Header="Update"
+                                        Click="MenuItem_Click_4">
+                                    </MenuItem>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </TabItem>
+
+                    <TabItem
+                        x:Name="ConsoleTab"
+                        Visibility="Collapsed">
+                        <StackPanel>
+                            <TextBox
+                                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                                FontSize="14"
+                                Margin="10"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                MinWidth="750"
+                                MinHeight="100"
+                                 MaxHeight="150"
+                                x:Name="ConsoleTextBox"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:HintAssist.Hint="Command"/>
+
+                            <StackPanel
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                                <Button              
+                                Margin="5"
+                                HorizontalAlignment="left"
+                                MinWidth="150"                              
+                                x:Name="CreateBackupButton"
+                                Click="CreateBackupButton_Click"
+                                >
+                                    Create backup
+                                </Button>
+                                <Button              
+                                Margin="5"
+                                HorizontalAlignment="left"
+                                MinWidth="150"                               
+                                x:Name="RestoreBackupButton"
+                                Click="RestoreBackupButton_Click"
+                                >
+                                    Restore backup
+                                </Button>
+
+                                <Button              
+                                Margin="5"
+                                HorizontalAlignment="Right"
+                                MinWidth="150"
+                                
+                                x:Name="ConsoleExecButton"
+                                Click="ConsoleExecButton_Click"
+                                >
+                                    Execute
+                                </Button>
+                            </StackPanel>
+
+                            <TextBox
+                                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                                FontSize="14"
+                                IsReadOnly="True"
+                                Margin="10"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                MinWidth="750"
+                                MinHeight="100"
+                                MaxHeight="150"
+                                x:Name="ConsoleResultTextBox"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:HintAssist.Hint="Result"/>
+
+
+
+                        </StackPanel>
+                    </TabItem>
+
+                    <TabItem
+                         Visibility="Collapsed"
+                        x:Name="AddDocumentTypeTab">
+                        <StackPanel>
+                            <TextBox
+                                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                                FontSize="12"
+                                Margin="10"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Center"
+                                MinWidth="750"
+                                Height="60"
+                                x:Name="AddDocumentTypeTextBox"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:HintAssist.Hint="Description"/>
+
+                            <ComboBox
+                                x:Name="SecurityLabelDocumentTextBox"
+                                  materialDesign:HintAssist.Hint="Security"
+                                  MinWidth="72"
+                                  HorizontalAlignment="Center"
+                                Margin="5"                               
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+
+                            <Button              
+                                Margin=" 15"
+                                HorizontalAlignment="Right"
+                                Width="50"
+                                x:Name="AddDocumentTypeButton"
+                                Click="AddDocumentTypeButton_Click"
+                                >
+                                Ok
+                            </Button>
+
+                        </StackPanel>
+
+                    </TabItem>
+
+                    <TabItem
+                        Visibility="Collapsed"
+                        x:Name="AddArticlesTab">
+                        <StackPanel>
+                            <TextBox
+                            x:Name="ShortNameTextBox"
+                            materialDesign:HintAssist.Hint="Name"
+                            HorizontalAlignment="Center"                          
+                            VerticalAlignment="Stretch">
+                            </TextBox>
+
+                            <TextBox
+                                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                                FontSize="12"
+                                Margin="10"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Center"
+                                MinWidth="750"
+                                Height="60"
+                                x:Name="ArticleDescriptionTextBox"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:HintAssist.Hint="Description"/>
+
+                            <ComboBox
+                                x:Name="SelectAuthorTextBox"
+                                  materialDesign:HintAssist.Hint="Автор"
+                                  MinWidth="72"
+                                  HorizontalAlignment="Center"
+                                Margin="5"                               
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+
+
+                            <ComboBox
+                                x:Name="DocumentTypeTextBox"
+                                  materialDesign:HintAssist.Hint="Тип документа"
+                                  MinWidth="72"
+                                  HorizontalAlignment="Center"
+                                Margin="5"                               
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+
+
+                            <ComboBox
+                                x:Name="SecurityLabelArticleTextBox"
+                                  materialDesign:HintAssist.Hint="Security"
+                                  MinWidth="72"
+                                  HorizontalAlignment="Center"
+                                Margin="5"                               
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+
+                            <Button                               
+                                HorizontalAlignment="Right"
+                                Width="50"
+                                x:Name="AddArticleButton"
+                                Click="AddArticleButton_Click"
+                                >
+                                Ok
+                            </Button>
+
+                        </StackPanel>
+                    </TabItem>
+
+                    <TabItem
+                        Visibility="Collapsed"
+                        x:Name="AddAuthorTab">
+                        <StackPanel>
+                            <TextBox
+                            x:Name="NameTextBox"
+                            materialDesign:HintAssist.Hint="Name"
+                            HorizontalAlignment="Center"
+                            
+                            VerticalAlignment="Stretch">
+                            </TextBox>
+
+                            <TextBox
+                                Margin="5"
+                            x:Name="SurNameTextBox"
+                            materialDesign:HintAssist.Hint="SurName"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top">
+                            </TextBox>
+
+                            <TextBox
+                                Margin="5"
+                            x:Name="MiddleNameTextBox"
+                            materialDesign:HintAssist.Hint="MiddleName"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top">
+                            </TextBox>
+
+                            <TextBox
+                                Margin="5"
+                            x:Name="EmailTextBox"
+                            materialDesign:HintAssist.Hint="Email"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top">
+                            </TextBox>
+
+                            <TextBox
+                             Margin="5"
+                            x:Name="AgeTextBox"
+                            materialDesign:HintAssist.Hint="Age"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top">
+                            </TextBox>
+
+                            <TextBox
+                                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                                FontSize="12"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Center"
+                                Width="250"
+                                Height="60"
+                                x:Name="DescriptionTextBox"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:HintAssist.Hint="Description"/>
+
+                            <ComboBox
+                                x:Name="SecurityLabelAuthorTextBox"
+                                  materialDesign:HintAssist.Hint="Security"
+                                  MinWidth="72"
+                                  HorizontalAlignment="Center"
+                                Margin="0"                               
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+
+                            <Button
+                                
+                                HorizontalAlignment="Right"
+                                Width="50"
+                                x:Name="AddAuthorButton"
+                                Click="AddAuthorButton_Click"
+                                >
+                                Ok
+                            </Button>
+
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </Grid>
+</Window>
