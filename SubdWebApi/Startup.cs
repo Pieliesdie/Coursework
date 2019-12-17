@@ -20,8 +20,7 @@ namespace TokenApp
         {
             Environment = environment;
             Configuration = new ConfigurationBuilder()
-                     .AddJsonFile("appsettings.json")
-                     .AddJsonFile($"appsettings.{Environment.EnvironmentName}.json")
+                     .AddJsonFile("appsettings.json")                     
                      .Build();
         }
 
