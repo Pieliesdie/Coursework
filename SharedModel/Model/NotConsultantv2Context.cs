@@ -7,7 +7,7 @@ namespace Model
 {
     public partial class NotConsultantv2Context : DbContext
     {
-        public NotConsultantv2Context(){ }
+        public NotConsultantv2Context(){}
 
         public NotConsultantv2Context(DbContextOptions<NotConsultantv2Context> options) : base(options) { }
 

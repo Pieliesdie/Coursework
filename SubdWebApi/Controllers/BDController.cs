@@ -24,15 +24,6 @@ namespace TokenApp.Controllers
             SecurityHelper.dbContext = context;
             SecurityHelper.User = httpContextAccessor.HttpContext.User;
             dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
-
-            //List<Articles> tmp = new List<Articles>();
-            //Random rnd = new Random();
-            //for (int i = 0; i < 50; i++)
-            //{
-            //    tmp.Add(new Articles() { ShortName = $"test{i}", CreateDate = DateTime.Now, LastChange = DateTime.Now, SecurityLabel = rnd.Next(1,4) });
-            //}
-            //dbContext.Articles.AddRange(tmp);
-            //dbContext.SaveChanges();
         }
 
         [Authorize(Roles = "Admin")]
@@ -90,9 +81,19 @@ namespace TokenApp.Controllers
         }
 
         [Route("GetArticles")]
-        public async Task<IEnumerable<Articles>> GetArticles([FromBody]int? id = null) => id == null
-                ? await dbContext.Articles.SecurityFilter().ToListAsync()
-                : await dbContext.Articles.SecurityFilter().Where(x => x.Id == id).ToListAsync();
+        public async Task<IEnumerable<Articles>> GetArticles([FromBody]int? id = null)
+        {
+            var articles = id == null
+                ? dbContext.Articles.SecurityFilter()
+                : dbContext.Articles.SecurityFilter().Where(x => x.Id == id);
+
+           await dbContext.DocumentTypes.LoadAsync();
+
+            return await articles.ToListAsync();
+            //return id == null
+            //    ? await dbContext.Articles.SecurityFilter().ToListAsync()
+            //    : await dbContext.Articles.SecurityFilter().Where(x => x.Id == id).ToListAsync();
+        }
 
         [Authorize(Roles = "Operator")]
         [Route("AddArticle")]

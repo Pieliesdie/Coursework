@@ -132,6 +132,7 @@ namespace subdClientApp
 
         public async Task<List<Articles>> GetArticlesAsync(int? id = null)
         {
+            //var x = await Provider.GetArticlesAsync(id);
             return await Provider.GetArticlesAsync(id);
         }
 
