@@ -11,11 +11,11 @@ using Model;
 
 namespace subdDataProvider
 {
-    public class WebAPIProvider : IMemory,IDisposable
+    public class WebAPIProvider : IMemory, IDisposable
     {
         private bool disposed = false;
         public string token { get; set; }
-         readonly HttpClient client = new HttpClient();
+        readonly HttpClient client = new HttpClient();
         private string WebApiHost;
 
         public void Dispose()
@@ -84,15 +84,15 @@ namespace subdDataProvider
 
         public async Task<List<Articles>> GetArticlesAsync(int? id = null)
         {
-            //try
-            //{
+            try
+            {
                 var stringContent = new StringContent(JsonConvert.SerializeObject(id), encoding: Encoding.UTF8, "application/json");
                 var response = await client.PostAsync($"{WebApiHost}/api/bd/GetArticles", stringContent);
                 response.EnsureSuccessStatusCode();
                 string json = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<List<Articles>>(json);
-            //}
-            //catch (Exception) { return null; }
+            }
+            catch (Exception) { return null; }
         }
 
         public async Task<List<Authors>> GetAuthorsAsync(int? id)

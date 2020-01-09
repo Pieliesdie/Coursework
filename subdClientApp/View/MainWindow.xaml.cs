@@ -125,6 +125,7 @@ namespace subdClientApp
                     DescriptionTextBox.Text = string.Empty;
                     SecurityLabelAuthorTextBox.SelectedIndex = -1;
                     MessageBox.Show("Запись добавлена");
+                    SelectAuthorTextBox.ItemsSource = await App.dataReader.GetAuthorsAsync();
                 }
                 else
                 {
@@ -226,6 +227,7 @@ namespace subdClientApp
                     AddDocumentTypeTextBox.Text = string.Empty;
                     SecurityLabelDocumentTextBox.SelectedIndex = -1;
                     MessageBox.Show("Запись добавлена");
+                    DocumentTypeTextBox.ItemsSource = await App.dataReader.GetDocumentTypesAsync();
                 }
                 else
                 {

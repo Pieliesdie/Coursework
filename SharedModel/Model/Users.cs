@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Model
 {
@@ -11,7 +12,9 @@ namespace Model
         public string Role { get; set; }
         public int? Permission { get; set; }
 
+        [JsonIgnore]
         public virtual SecurityLabels PermissionNavigation { get; set; }
+        [JsonIgnore]
         public virtual Roles RoleNavigation { get; set; }
     }
 }
