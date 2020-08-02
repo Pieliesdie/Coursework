@@ -49,7 +49,7 @@ namespace subdClientApp
                 case DataSource.DB:
                     {
                         var options = new DbContextOptionsBuilder<NotConsultantv2Context>();
-                        options.UseSqlServer($"Server = DESKTOP-MK32EF2; Database = NotConsultant; user id = {name}; password = {password};");
+                        options.UseSqlServer($"Server = DESKTOP-MK32EF2; Database = NotConsultantv2; user id = {name}; password = {password};");
                         Provider = new DBProvider(options.Options);
                         break;
                     }
